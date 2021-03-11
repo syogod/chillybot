@@ -1165,7 +1165,7 @@ bot.on('nosong', function (data)
 //checks when the bot speaks
 bot.on('speak', function (data)
 {
-    var text = data.text.toLowerCase; //the most recent text in the chatbox on turntable    
+    var text = data.text.toLowerCase(); //the most recent text in the chatbox on turntable    
     name = data.name; //name of latest person to say something
     checkActivity = Date.now(); //update when someone says something   
 
@@ -2609,7 +2609,7 @@ bot.on('speak', function (data)
     {
         bot.speak('http://25.media.tumblr.com/tumblr_mce8z6jN0d1qbzqexo1_r1_500.gif');
     }
-    else if (text.match(/^\/queuepff$/) && condition === true)
+    else if (text.match(/^\/queueoff$/) && condition === true)
     {
         bot.speak('the queue is now inactive.');
         queue = false;
@@ -3112,7 +3112,7 @@ bot.on('rem_dj', function (data)
 bot.on('pmmed', function (data)
 {
     var senderid = data.senderid; //the userid of the person who just pmmed the bot
-    var text = data.text.toLowerCase; //the text sent to the bot in a pm    
+    var text = data.text.toLowerCase(); //the text sent to the bot in a pm    
     var name1 = theUsersList.indexOf(data.senderid) + 1; //the name of the person who sent the bot a pm
     var isInRoom = checkToseeIfPmmerIsInRoom(senderid); //check to see whether pmmer is in the same room as the bot
 
