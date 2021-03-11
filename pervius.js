@@ -1165,7 +1165,7 @@ bot.on('nosong', function (data)
 //checks when the bot speaks
 bot.on('speak', function (data)
 {
-    var text = data.text; //the most recent text in the chatbox on turntable    
+    var text = data.text.toLowerCase; //the most recent text in the chatbox on turntable    
     name = data.name; //name of latest person to say something
     checkActivity = Date.now(); //update when someone says something   
 
@@ -1184,7 +1184,7 @@ bot.on('speak', function (data)
             bot.speak('There are currently ' + thisHoldsThePlaylist.length + ' songs in my playlist.');
         }
     }
-    else if (text.match(/^\/randomSong$/) && condition === true)
+    else if (text.match(/^\/randomsong$/) && condition === true)
     {
         if (randomOnce != 1)
         {
@@ -1321,7 +1321,7 @@ bot.on('speak', function (data)
             bot.speak('@' + name + ' there is currently no queue');
         }
     }
-    else if (text.match(/^\/lengthLimit/) && condition === true)
+    else if (text.match(/^\/lengthlimit/) && condition === true)
     {
         if (LIMIT === true)
         {
@@ -1468,11 +1468,19 @@ bot.on('speak', function (data)
         }
         if (randomOnce === 0)
         {
-            whatsOn += 'playlist reordering in progress?: No';
+            whatsOn += 'playlist reordering in progress?: No, ';
         }
         else
         {
-            whatsOn += 'playlist reordering in progress?: Yes';
+            whatsOn += 'playlist reordering in progress?: Yes, ';
+        }
+        if (slideOn === true)
+        {
+            whatsOn += 'slide: On';
+        }
+        else   
+        {
+            whatsOn += 'slide: Off';
         }
 
         bot.speak(whatsOn);
@@ -1494,12 +1502,12 @@ bot.on('speak', function (data)
             votesLeft = HowManyVotesToSkip;
         }
     }
-    else if (text.match(/^\/noTheme/) && condition === true)
+    else if (text.match(/^\/notheme/) && condition === true)
     {
         THEME = false;
         bot.speak('The theme is now inactive');
     }
-    else if (text.match(/^\/setTheme/) && condition === true)
+    else if (text.match(/^\/settheme/) && condition === true)
     {
         whatIsTheme = data.text.slice(10);
         THEME = true;
@@ -1822,22 +1830,22 @@ bot.on('speak', function (data)
         bot.speak('room greeting: Off');
         GREET = false;
     }
-    else if (text.match(/^\/eventmessageOn/) && condition === true)
+    else if (text.match(/^\/eventmessageon/) && condition === true)
     {
         bot.speak('event message: On');
         EVENTMESSAGE = true;
     }
-    else if (text.match(/^\/eventmessageOff/) && condition === true)
+    else if (text.match(/^\/eventmessageoff/) && condition === true)
     {
         bot.speak('event message: Off');
         EVENTMESSAGE = false;
     }
-    else if (text.match(/^\/messageOn/) && condition === true)
+    else if (text.match(/^\/messageon/) && condition === true)
     {
         bot.speak('message: On');
         MESSAGE = true;
     }
-    else if (text.match(/^\/messageOff/) && condition === true)
+    else if (text.match(/^\/messageoff/) && condition === true)
     {
         bot.speak('message: Off');
         MESSAGE = false;
@@ -2032,7 +2040,7 @@ bot.on('speak', function (data)
         myId = data.userid;
         bot.becomeFan(myId);
     }
-    else if (data.text == '/getTags')
+    else if (data.text == '/gettags')
     {
         bot.speak('artist name: ' + artist + ', song name: ' + song + ', album: ' + album + ', genre: ' + genre);
     }
@@ -2523,7 +2531,7 @@ bot.on('speak', function (data)
             }
         }
     }
-    else if (text.match(/^\/queueOn$/) && condition === true)
+    else if (text.match(/^\/queueon$/) && condition === true)
     {
         queueList = [];
         queueName = [];
@@ -2543,7 +2551,7 @@ bot.on('speak', function (data)
             bot.speak('the play limit is currently turned off');
         }
     }
-    else if (text.match(/^\/playLimitOn/) && condition === true)
+    else if (text.match(/^\/playlimiton/) && condition === true)
     {
         var playLimitNumber = Number(data.text.slice(13)); //holds given number
 
@@ -2592,7 +2600,7 @@ bot.on('speak', function (data)
             PLAYLIMIT = true; //mark playlimit as being on    
         }
     }
-    else if (text.match(/^\/playLimitOff$/) && condition === true)
+    else if (text.match(/^\/playlimitoff$/) && condition === true)
     {
         PLAYLIMIT = false;
         bot.speak('the play limit is now inactive.');
@@ -2601,7 +2609,7 @@ bot.on('speak', function (data)
     {
         bot.speak('http://25.media.tumblr.com/tumblr_mce8z6jN0d1qbzqexo1_r1_500.gif');
     }
-    else if (text.match(/^\/queueOff$/) && condition === true)
+    else if (text.match(/^\/queuepff$/) && condition === true)
     {
         bot.speak('the queue is now inactive.');
         queue = false;
@@ -3104,7 +3112,7 @@ bot.on('rem_dj', function (data)
 bot.on('pmmed', function (data)
 {
     var senderid = data.senderid; //the userid of the person who just pmmed the bot
-    var text = data.text; //the text sent to the bot in a pm    
+    var text = data.text.toLowerCase; //the text sent to the bot in a pm    
     var name1 = theUsersList.indexOf(data.senderid) + 1; //the name of the person who sent the bot a pm
     var isInRoom = checkToseeIfPmmerIsInRoom(senderid); //check to see whether pmmer is in the same room as the bot
 
@@ -3478,7 +3486,7 @@ bot.on('pmmed', function (data)
             bot.pm('the play limit is currently turned off', data.senderid);
         }
     }
-    else if (text.match(/^\/playLimitOn/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/playlimiton/) && condition === true && isInRoom === true)
     {
         var playLimitNumber = Number(data.text.slice(13)); //holds given number
 
@@ -3527,12 +3535,12 @@ bot.on('pmmed', function (data)
             PLAYLIMIT = true; //mark playlimit as being on    
         }
     }
-    else if (text.match(/^\/playLimitOff$/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/playlimitoff$/) && condition === true && isInRoom === true)
     {
         PLAYLIMIT = false;
         bot.pm('the play limit is now inactive.', data.senderid);
     }
-    else if (text.match(/^\/queueOn$/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/queueon$/) && condition === true && isInRoom === true)
     {
         queueList = [];
         queueName = [];
@@ -3541,7 +3549,7 @@ bot.on('pmmed', function (data)
         clearTimeout(beginTimer); //if queue is turned on again while somebody was on timeout to get on stage, then clear it
         sayOnce = true;
     }
-    else if (text.match(/^\/queueOff$/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/queueoff$/) && condition === true && isInRoom === true)
     {
         bot.pm('the queue is now inactive.', data.senderid);
         queue = false;
@@ -3737,7 +3745,7 @@ bot.on('pmmed', function (data)
             bot.pm('you must be on stage to use that command.', data.senderid);
         }
     }
-    else if (data.text == '/getTags' && isInRoom === true)
+    else if (data.text == '/gettags' && isInRoom === true)
     {
         bot.pm('artist name: ' + artist + ', song name: ' + song + ', album: ' + album + ', genre: ' + genre, data.senderid);
     }
@@ -3779,22 +3787,22 @@ bot.on('pmmed', function (data)
     {
         bot.vote('down');
     }
-    else if (text.match(/^\/eventmessageOn/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/eventmessageon/) && condition === true && isInRoom === true)
     {
         bot.pm('event message: On', data.senderid);
         EVENTMESSAGE = true;
     }
-    else if (text.match(/^\/eventmessageOff/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/eventmessageoff/) && condition === true && isInRoom === true)
     {
         bot.pm('event message: Off', data.senderid);
         EVENTMESSAGE = false;
     }
-    else if (text.match(/^\/messageOff/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/messageoff/) && condition === true && isInRoom === true)
     {
         bot.pm('message: Off', data.senderid);
         MESSAGE = false;
     }
-    else if (text.match(/^\/messageOn/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/messageon/) && condition === true && isInRoom === true)
     {
         bot.pm('message: On', data.senderid);
         MESSAGE = true;
@@ -3829,13 +3837,13 @@ bot.on('pmmed', function (data)
             bot.pm('There are currently ' + thisHoldsThePlaylist.length + ' songs in my playlist.', data.senderid);
         }
     }
-    else if (text.match(/^\/setTheme/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/settheme/) && condition === true && isInRoom === true)
     {
         whatIsTheme = data.text.slice(10);
         THEME = true;
         bot.pm('The theme is now set to: ' + whatIsTheme, data.senderid);
     }
-    else if (text.match(/^\/noTheme/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/notheme/) && condition === true && isInRoom === true)
     {
         THEME = false;
         bot.pm('The theme is now inactive', data.senderid);
@@ -4023,7 +4031,7 @@ bot.on('pmmed', function (data)
             bot.pm('There is currently no queue.', data.senderid);
         }
     }
-    else if (text.match(/^\/randomSong$/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/randomsong$/) && condition === true && isInRoom === true)
     {
         if (randomOnce != 1)
         {
@@ -4087,7 +4095,7 @@ bot.on('pmmed', function (data)
             }
         }
     }
-    else if (text.match(/^\/lengthLimit/) && condition === true && isInRoom === true)
+    else if (text.match(/^\/lengthlimit/) && condition === true && isInRoom === true)
     {
         if (LIMIT === true)
         {
@@ -4248,11 +4256,19 @@ bot.on('pmmed', function (data)
         }
         if (randomOnce === 0)
         {
-            whatsOn += 'playlist reordering in progress?: No';
+            whatsOn += 'playlist reordering in progress?: No, ';
         }
         else
         {
-            whatsOn += 'playlist reordering in progress?: Yes';
+            whatsOn += 'playlist reordering in progress?: Yes, ';
+        }
+        if (slideOn === true)
+        {
+            whatsOn += 'slide: One';
+        }
+        else
+        {
+            whatsOn += 'slide: Off';
         }
 
         bot.pm(whatsOn, data.senderid);
