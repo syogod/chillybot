@@ -109,7 +109,9 @@ ADMIN ONLY COMMANDS: (moderator only)
 
 /refreshoff --> disables the use of the /refresh command (handy if its being abused)
 
+/slideon --> sets play limit to 1, and turns queue on
 
+/slideoff --> turns off play limit and the queue
 
 COMMANDS: (public)
 
