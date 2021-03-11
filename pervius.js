@@ -11,9 +11,34 @@
 
 /*******************************BeginSetUp*****************************************************************************/
 var Bot = require('ttapi');
-var AUTH = 'xxxxxxxxxxxxxxxxxxxxxxxxx'; //set the auth of your bot here.
-var USERID = 'xxxxxxxxxxxxxxxxxxxxxxxxx'; //set the userid of your bot here.
-var ROOMID = 'xxxxxxxxxxxxxxxxxxxxxxxxx'; //set the roomid of the room you want the bot to go to here.
+
+
+const fs = require('fs');
+var path = require('path');
+global.AUTH = "";
+global.ROOMID = "";
+global.USERID = "";
+var scriptName = path.basename(__filename, '.js');
+
+try {
+	const data = fs.readFileSync(scriptName + '.auth', 'utf8');
+	const lines = data.split(/\r?\n/);
+	
+	lines.forEach((line) => {
+		if(line.startsWith("AUTH")) {
+			global.AUTH = line.slice(7);
+		}
+		if(line.startsWith("ROOM")) {
+			global.ROOMID = line.slice(7);
+		}
+		if(line.startsWith("USER")) {
+			global.USERID = line.slice(7);
+		}
+	});
+} catch (err) {
+	console.error(err);
+}
+
 var playLimit = 4; //set the playlimit here (default 4 songs)
 var songLengthLimit = 10.0; //set song limit in minutes
 var afkLimit = 20; //set the afk limit in minutes here
@@ -34,8 +59,8 @@ global.masterIds = ['1234', '1234']; //example (clear this before using)
 					   */
 
 //this is for the bot's autodjing(triggers on new song, bot also gets on when no song is playing, unless autodjing is turned off)
-var whenToGetOnStage = 1; //when this many or less people djing the bot will get on stage(only if autodjing is enabled)
-var whenToGetOffStage = 3; //when this many people are on stage and auto djing is enabled the bot will get off stage(note: the bot counts as one person)
+var whenToGetOnStage = 2; //when this many or less people djing the bot will get on stage(only if autodjing is enabled)
+var whenToGetOffStage = 4; //when this many people are on stage and auto djing is enabled the bot will get off stage(note: the bot counts as one person)
 
 var roomJoinMessage = ''; //the message users will see when they join the room, leave it empty for the default message (only works when greet is turned on)
 //example of how to use this, var roomJoinMessage = 'your message goes here';
@@ -78,6 +103,7 @@ var defaultMessage = true;
 /*This corresponds to the MESSAGE variable directly above, if true it will give you the default repeat message along with your room info, if false it will only say your room info.
 							  (only works when MESSAGE = true) (this feature is on by default)
 							*/
+var slideOn = false; //when on sets limit to 1 and turns on queue
 var GREET = true; //room greeting when someone joins the room(on by default)
 var voteSkip = false; //voteskipping(off by default)
 var roomAFK = false; //audience afk limit(off by default)
@@ -86,7 +112,7 @@ var kickTTSTAT = false; //kicks the ttstats bot when it tries to join the room(o
 var LIMIT = true; //song length limit (on by default)
 var PLAYLIMIT = false; //song play limit, this is for the playLimit variable up above(off by default)
 var autoSnag = false; //auto song adding(different from every song adding), tied to howManyVotes up above, (off by default)
-var autoBop = false; //choose whether the bot will autobop for each song or not(against the rules but i leave it up to you) (off by default)
+var autoBop = true; //choose whether the bot will autobop for each song or not(against the rules but i leave it up to you) (off by default)
 var afkThroughPm = false; //choose whether afk warnings(for dj's on stage) will be given through the pm or the chatbox (false = chatbox, true = pm message)
 var greetThroughPm = false; //choose whether greeting message is through the pm or the chatbox(false = chatbox, true = pm), (only works when greeting message is turned on) (off by default)
 var repeatMessageThroughPm = false;
@@ -2767,6 +2793,21 @@ bot.on('speak', function (data)
             bot.speak('No one is currently marked as afk');
         }
     }
+    else if (text.match(/^\/slideon/) && condition === true)
+    {
+	slideOn = true;
+	PLAYLIMIT = true;
+	playLimit = 1;
+	queue = true;
+	bot.speak('Everybody slide now!');
+    }
+    else if (text.match(/^\/slideoff/) && condition === true)
+    {
+	slideOn = false;
+	PLAYLIMIT = false;
+	queue = false;
+	bot.speak('No more sliding for you!');
+    }
 
 
     //checks to see if someone is trying to speak to an afk person or not.  
@@ -4607,6 +4648,21 @@ bot.on('pmmed', function (data)
             '/snag, /botstatus, /removesong, /voteskipon #, /voteskipoff, /greeton, /greetoff, /getonstage, /banstage @, /unbanstage @, /userid @, /inform, ' +
             '/whobanned, /whostagebanned, /roomafkon, /roomafkoff, /songstats, /username, /modpm', data.senderid);
         condition = false;
+    }
+    else if (text.match(/^\/slideon/) && isInRoom === true && condition === true)
+    {
+	slideOn = true;
+	PLAYLIMIT = true;
+	playLimit = 1;
+	queue = true;
+	bot.speak('Everybody slide now!');
+    }
+    else if (text.match(/^\/slideoff/) && isInRoom === true && condition === true)
+    {
+	slideOn = false;
+	PLAYLIMIT = false;
+	queue = false;
+	bot.speak('No more slide for you!');
     }
 });
 
