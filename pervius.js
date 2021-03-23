@@ -21,7 +21,8 @@ global.USERID = "";
 var scriptName = path.basename(__filename, '.js');
 
 try {
-	const data = fs.readFileSync(scriptName + '.auth', 'utf8');
+	console.log(__dirname);
+	const data = fs.readFileSync(__dirname + '/' + scriptName + '.auth', 'utf8');
 	const lines = data.split(/\r?\n/);
 	
 	lines.forEach((line) => {
@@ -59,8 +60,8 @@ global.masterIds = ['1234', '1234']; //example (clear this before using)
 					   */
 
 //this is for the bot's autodjing(triggers on new song, bot also gets on when no song is playing, unless autodjing is turned off)
-var whenToGetOnStage = 2; //when this many or less people djing the bot will get on stage(only if autodjing is enabled)
-var whenToGetOffStage = 4; //when this many people are on stage and auto djing is enabled the bot will get off stage(note: the bot counts as one person)
+var whenToGetOnStage = 1; //when this many or less people djing the bot will get on stage(only if autodjing is enabled)
+var whenToGetOffStage = 3; //when this many people are on stage and auto djing is enabled the bot will get off stage(note: the bot counts as one person)
 
 var roomJoinMessage = ''; //the message users will see when they join the room, leave it empty for the default message (only works when greet is turned on)
 //example of how to use this, var roomJoinMessage = 'your message goes here';
